@@ -1,0 +1,50 @@
+name: Run tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./code
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install chromium
+
+      - name: Build app
+        run: make build
+
+      - name: Start app and run tests
+        run: |
+          make develop &
+          APP_PID=$!
+          
+          npx wait-on http://localhost:3000 --timeout 30000
+          
+          APP_URL=http://localhost:3000 make test
+          
+          kill $APP_PID || true

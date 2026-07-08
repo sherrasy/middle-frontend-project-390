@@ -9,3 +9,6 @@ build:
 
 mock:
 	npx @stoplight/prism-cli mock contract/openapi.yaml
+
+test:
+	APP_URL=$(APP_URL) npx vitest run tests/smoke.test.ts

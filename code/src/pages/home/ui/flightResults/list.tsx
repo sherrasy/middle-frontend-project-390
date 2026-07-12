@@ -1,24 +1,24 @@
-import React from 'react';
-import { FlightResultItem, FlightResultItemProps } from './item';
-import { Loader } from '@/shared/ui/loader';
+import { UI_MESSAGES } from '@/shared/constants/messages';
+import { TEST_IDS } from '@/shared/constants/testids';
+import { TFlight } from '@/shared/types/types';
 import { EmptyState } from '@/shared/ui/emptyState';
 import { ErrorMessage } from '@/shared/ui/errorMessage';
-import { TEST_IDS } from '@/shared/constants/testids';
-import { UI_MESSAGES } from '@/shared/constants/messages';
+import { Loader } from '@/shared/ui/loader';
 import { getViewState, ViewState } from '../../lib/getViewState';
+import { FlightResultItem } from './item';
 
-export interface FlightResultsProps {
-  flights: FlightResultItemProps[];
-  isLoading?: boolean;
-  isError?: boolean;
+interface FlightResultsProps {
+  flights: TFlight[];
+  isLoading: boolean;
+  error: string | null;
 }
 
-export const FlightResults: React.FC<FlightResultsProps> = ({
+export const FlightResults = ({
   flights,
-  isLoading = false,
-  isError = false,
-}) => {
-  const state = getViewState(isLoading, isError, flights.length);
+  isLoading,
+  error,
+}: FlightResultsProps) => {
+  const state = getViewState(isLoading, !!error, flights.length);
 
   const content = (() => {
     switch (state) {
@@ -31,6 +31,7 @@ export const FlightResults: React.FC<FlightResultsProps> = ({
             testId={TEST_IDS.flights.error}
             title={UI_MESSAGES.error.title}
             description={UI_MESSAGES.error.description}
+            apiMessage={error}
           />
         );
 
@@ -47,8 +48,8 @@ export const FlightResults: React.FC<FlightResultsProps> = ({
       case ViewState.List:
         return (
           <div className='space-y-4'>
-            {flights.map((flight, index) => (
-              <FlightResultItem key={index} {...flight} />
+            {flights.map((flight) => (
+              <FlightResultItem key={flight.id} flight={flight} />
             ))}
           </div>
         );

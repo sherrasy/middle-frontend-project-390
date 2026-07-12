@@ -1,21 +1,23 @@
+import { SearchFlightsParams } from '@/shared/api/flightsApi';
+import { useGetFlights } from '../model/useGetFlights';
 import { FlightResults } from './flightResults/list';
 import { FlightSearchForm } from './flightSearchForm';
 
 export const HomePage = () => {
-  return (
-    <div className='min-h-screen bg-gray-50'>
-      <header className='bg-white shadow-sm border-b border-gray-200'>
-        <div className='max-w-6xl mx-auto px-4 py-4'>
-          <h1 className='text-2xl font-bold text-gray-900'>
-            Бронирование авиабилетов
-          </h1>
-        </div>
-      </header>
+  const { flights, isLoading, error, refetch } = useGetFlights();
 
-      <main className='px-4 py-8 flex flex-col items-center'>
-        <FlightSearchForm />
-        <FlightResults flights={[]} isLoading={false} isError={false} />
-      </main>
-    </div>
+  const handleSearch = (params: SearchFlightsParams) => {
+    refetch({
+      origin: params.origin,
+      destination: params.destination,
+      date: params.date,
+      passengers: params.passengers,
+    });
+  };
+  return (
+    <>
+      <FlightSearchForm onSubmit={handleSearch} />
+      <FlightResults flights={flights} isLoading={isLoading} error={error} />
+    </>
   );
 };

@@ -14,4 +14,5 @@ export const TEST_IDS = {
     passengers: 'search-passengers',
     submit: 'search-submit',
   },
+  smoke: 'main-heading',
 } as const;

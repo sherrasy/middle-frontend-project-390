@@ -45,24 +45,44 @@ describe('Flight Search - Main Page', () => {
     return url;
   };
 
-  const mockCities = async () => {
-    await page.route('*/api/cities', (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(CITIES_FIXTURE),
-      }),
+  const waitForCitiesLoaded = async () => {
+    await page.waitForFunction(
+      (selector) => {
+        const select = document.querySelector(
+          selector,
+        ) as HTMLSelectElement | null;
+        return select !== null && select.options.length > 1;
+      },
+      `[data-testid="${TEST_IDS.search.origin}"]`,
+      { timeout: 10000 },
     );
   };
 
+  const waitForFlightsLoaded = async () => {
+    await page
+      .locator(`[data-testid="${TEST_IDS.flights.item}"]`)
+      .first()
+      .waitFor({ state: 'visible', timeout: 15000 });
+  };
+
+  const mockCities = async () => {
+    await page.route('*/api/cities', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(CITIES_FIXTURE),
+      });
+    });
+  };
+
   const mockFlights = async (response: { status: number; body: unknown }) => {
-    await page.route('*/api/flights**', (route) =>
-      route.fulfill({
+    await page.route(/\/api\/flights(\?.*)?$/, async (route) => {
+      await route.fulfill({
         status: response.status,
         contentType: 'application/json',
         body: JSON.stringify(response.body),
-      }),
-    );
+      });
+    });
   };
 
   const submitSearch = async () => {
@@ -76,15 +96,18 @@ describe('Flight Search - Main Page', () => {
     await mockFlights(
       options?.flights ?? { status: 200, body: FLIGHTS_FIXTURE },
     );
-    await page.goto(getAppUrl());
+
+    await page.goto(getAppUrl(), { waitUntil: 'domcontentloaded' });
   };
 
   it('renders search form properly', async () => {
     await loadPage();
 
     const form = page.locator(`[data-testid="${TEST_IDS.search.form}"]`);
-    await form.waitFor({ state: 'visible', timeout: 5000 });
+    await form.waitFor({ state: 'visible', timeout: 10000 });
     expect(await form.isVisible()).toBe(true);
+
+    await waitForCitiesLoaded();
 
     expect(
       await page
@@ -114,9 +137,9 @@ describe('Flight Search - Main Page', () => {
   it('shows initial flights', async () => {
     await loadPage();
 
-    const items = page.locator(`[data-testid="${TEST_IDS.flights.item}"]`);
-    await items.first().waitFor({ state: 'visible', timeout: 10000 });
+    await waitForFlightsLoaded();
 
+    const items = page.locator(`[data-testid="${TEST_IDS.flights.item}"]`);
     const count = await items.count();
     expect(count).toBeGreaterThan(0);
   });
@@ -124,10 +147,11 @@ describe('Flight Search - Main Page', () => {
   it('shows flight info in flight card', async () => {
     await loadPage();
 
+    await waitForFlightsLoaded();
+
     const firstItem = page
       .locator(`[data-testid="${TEST_IDS.flights.item}"]`)
       .first();
-    await firstItem.waitFor({ state: 'visible', timeout: 10000 });
     expect(await firstItem.isVisible()).toBe(true);
 
     const text = await firstItem.innerText();
@@ -145,9 +169,7 @@ describe('Flight Search - Main Page', () => {
   it('handles search flights', async () => {
     await loadPage();
 
-    await page
-      .locator(`[data-testid="${TEST_IDS.search.origin}"]`)
-      .waitFor({ state: 'visible' });
+    await waitForCitiesLoaded();
 
     await page.selectOption(`[data-testid="${TEST_IDS.search.origin}"]`, {
       index: 1,
@@ -158,18 +180,21 @@ describe('Flight Search - Main Page', () => {
 
     await submitSearch();
 
+    await page.waitForLoadState('networkidle', { timeout: 10000 });
+    await waitForFlightsLoaded();
+
     const results = page.locator(`[data-testid="${TEST_IDS.flights.results}"]`);
-    await results.waitFor({ state: 'visible', timeout: 10000 });
     expect(await results.isVisible()).toBe(true);
   });
 
   it('navigates to booking page on button click', async () => {
     await loadPage();
 
+    await waitForFlightsLoaded();
+
     const bookButton = page
       .locator(`[data-testid="${TEST_IDS.flights.book}"]`)
       .first();
-    await bookButton.waitFor({ state: 'visible', timeout: 10000 });
     expect(await bookButton.isVisible()).toBe(true);
 
     await bookButton.click();

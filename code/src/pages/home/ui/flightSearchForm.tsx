@@ -6,16 +6,16 @@ import { getTodayDate } from '@/shared/lib/formatDate';
 
 const DEFAULT_STYLES = {
   inputClass:
-    'w-full h-10 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none',
+    'w-full h-10 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none disabled:bg-gray-100 disabled:cursor-not-allowed',
   labelClass: 'text-sm font-bold text-gray-700',
 };
 
-interface FlightSearchForm {
+interface FlightSearchFormProps {
   onSubmit: (params: SearchFlightsParams) => void;
 }
 
-export const FlightSearchForm = ({ onSubmit }: FlightSearchForm) => {
-  const { cities, isLoading } = useCities();
+export const FlightSearchForm = ({ onSubmit }: FlightSearchFormProps) => {
+  const { cities, isLoading: citiesLoading } = useCities();
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState(getTodayDate());
@@ -23,15 +23,16 @@ export const FlightSearchForm = ({ onSubmit }: FlightSearchForm) => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    if (!origin || !destination) return;
     onSubmit({ origin, destination, date, passengers });
   };
 
   useEffect(() => {
-    if (cities.length && !isLoading) {
+    if (cities.length >= 2 && !origin && !destination) {
       setOrigin(cities[0].code);
       setDestination(cities[1].code);
     }
-  }, [cities, isLoading]);
+  }, [cities, origin, destination]);
 
   return (
     <form
@@ -53,6 +54,7 @@ export const FlightSearchForm = ({ onSubmit }: FlightSearchForm) => {
             className={DEFAULT_STYLES.inputClass}
             value={origin}
             onChange={(e) => setOrigin(e.target.value)}
+            disabled={citiesLoading}
           >
             <option value=''>Выберите город</option>
             {cities.map((city) => (
@@ -76,6 +78,7 @@ export const FlightSearchForm = ({ onSubmit }: FlightSearchForm) => {
             className={DEFAULT_STYLES.inputClass}
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
+            disabled={citiesLoading}
           >
             <option value=''>Выберите город</option>
             {cities.map((city) => (
@@ -124,7 +127,8 @@ export const FlightSearchForm = ({ onSubmit }: FlightSearchForm) => {
         <button
           type='submit'
           data-testid={TEST_IDS.search.submit}
-          className='w-48 h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg'
+          disabled={citiesLoading || !origin || !destination}
+          className='w-48 h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed'
         >
           Найти
         </button>

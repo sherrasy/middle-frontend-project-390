@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import type { TFlight } from '@/shared/types/types';
 import {
   searchFlights,
   type SearchFlightsParams,
 } from '@/shared/api/flightsApi';
 import { getTodayDate } from '@/shared/lib/formatDate';
+import type { TFlight } from '@/shared/types/types';
+import { useEffect, useState } from 'react';
 
 interface UseFlightsResult {
   flights: TFlight[];
@@ -21,29 +21,29 @@ const DEFAULT_SEARCH: SearchFlightsParams = {
 };
 
 export const useGetFlights = (
-  initialParams = DEFAULT_SEARCH,
+  initialParams: SearchFlightsParams = DEFAULT_SEARCH,
 ): UseFlightsResult => {
   const [flights, setFlights] = useState<TFlight[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchFlights = async (params: SearchFlightsParams) => {
+  const refetch = async (params: SearchFlightsParams) => {
     setIsLoading(true);
     setError(null);
-
     try {
       const data = await searchFlights(params);
       setFlights(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
+      setFlights([]);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchFlights(initialParams);
+    refetch(initialParams);
   }, []);
 
-  return { flights, isLoading, error, refetch: fetchFlights };
+  return { flights, isLoading, error, refetch };
 };

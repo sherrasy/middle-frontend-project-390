@@ -14,6 +14,8 @@ import {
   expect,
   it,
 } from 'vitest';
+import { CITIES_FIXTURE } from './_fixtures/cities';
+import { FLIGHTS_FIXTURE } from './_fixtures/flights';
 
 describe('Flight Search - Main Page', () => {
   let browser: Browser;
@@ -43,17 +45,42 @@ describe('Flight Search - Main Page', () => {
     return url;
   };
 
-  const gotoAndWait = async () => {
-    await page.goto(getAppUrl());
-    await page.waitForLoadState('networkidle');
+  const mockCities = async () => {
+    await page.route('**/api/cities**', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(CITIES_FIXTURE),
+      }),
+    );
+  };
+
+  const mockFlights = async (response: { status: number; body: unknown }) => {
+    await page.route('**/api/flights**', (route) =>
+      route.fulfill({
+        status: response.status,
+        contentType: 'application/json',
+        body: JSON.stringify(response.body),
+      }),
+    );
   };
 
   const submitSearch = async () => {
     await page.click(`[data-testid="${TEST_IDS.search.submit}"]`);
   };
 
+  const loadPage = async (options?: {
+    flights?: { status: number; body: unknown };
+  }) => {
+    await mockCities();
+    await mockFlights(
+      options?.flights ?? { status: 200, body: FLIGHTS_FIXTURE },
+    );
+    await page.goto(getAppUrl());
+  };
+
   it('renders search form properly', async () => {
-    await gotoAndWait();
+    await loadPage();
 
     const form = page.locator(`[data-testid="${TEST_IDS.search.form}"]`);
     await form.waitFor({ state: 'visible', timeout: 5000 });
@@ -85,7 +112,7 @@ describe('Flight Search - Main Page', () => {
   });
 
   it('shows initial flights', async () => {
-    await gotoAndWait();
+    await loadPage();
 
     const items = page.locator(`[data-testid="${TEST_IDS.flights.item}"]`);
     await items.first().waitFor({ state: 'visible', timeout: 10000 });
@@ -95,7 +122,7 @@ describe('Flight Search - Main Page', () => {
   });
 
   it('shows flight info in flight card', async () => {
-    await gotoAndWait();
+    await loadPage();
 
     const firstItem = page
       .locator(`[data-testid="${TEST_IDS.flights.item}"]`)
@@ -107,8 +134,16 @@ describe('Flight Search - Main Page', () => {
     expect(text).toContain('₽');
   });
 
+  it('shows empty state', async () => {
+    await loadPage({ flights: { status: 200, body: [] } });
+
+    const empty = page.locator(`[data-testid="${TEST_IDS.flights.empty}"]`);
+    await empty.waitFor({ state: 'visible', timeout: 10000 });
+    expect(await empty.isVisible()).toBe(true);
+  });
+
   it('handles search flights', async () => {
-    await gotoAndWait();
+    await loadPage();
 
     await page
       .locator(`[data-testid="${TEST_IDS.search.origin}"]`)
@@ -129,7 +164,7 @@ describe('Flight Search - Main Page', () => {
   });
 
   it('navigates to booking page on button click', async () => {
-    await gotoAndWait();
+    await loadPage();
 
     const bookButton = page
       .locator(`[data-testid="${TEST_IDS.flights.book}"]`)
@@ -143,39 +178,13 @@ describe('Flight Search - Main Page', () => {
     expect(page.url()).toMatch(/\/booking\/.+/);
   });
 
-  it('shows empty state', async () => {
-    await gotoAndWait();
-
-    await page.route('**/api/flights**', (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify([]),
-      }),
-    );
-
-    await submitSearch();
-
-    const empty = page.locator(`[data-testid="${TEST_IDS.flights.empty}"]`);
-    await empty.waitFor({ state: 'visible', timeout: 10000 });
-    expect(await empty.isVisible()).toBe(true);
-  });
-
   it('shows error state on API failure', async () => {
-    await gotoAndWait();
-
-    await page.route('**/api/flights**', (route) =>
-      route.fulfill({
+    await loadPage({
+      flights: {
         status: 500,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          code: 'INTERNAL_ERROR',
-          message: 'Server error',
-        }),
-      }),
-    );
-
-    await submitSearch();
+        body: { code: 'INTERNAL_ERROR', message: 'Server error' },
+      },
+    });
 
     const error = page.locator(`[data-testid="${TEST_IDS.flights.error}"]`);
     await error.waitFor({ state: 'visible', timeout: 10000 });

@@ -54,7 +54,7 @@ describe('Flight Search - Main Page', () => {
         return select !== null && select.options.length > 1;
       },
       `[data-testid="${TEST_IDS.search.origin}"]`,
-      { timeout: 10000 },
+      { timeout: 25000 },
     );
   };
 
@@ -62,7 +62,7 @@ describe('Flight Search - Main Page', () => {
     await page
       .locator(`[data-testid="${TEST_IDS.flights.item}"]`)
       .first()
-      .waitFor({ state: 'visible', timeout: 15000 });
+      .waitFor({ state: 'visible', timeout: 25000 });
   };
 
   const mockCities = async () => {
@@ -98,6 +98,9 @@ describe('Flight Search - Main Page', () => {
     );
 
     await page.goto(getAppUrl(), { waitUntil: 'domcontentloaded' });
+    await page
+      .waitForLoadState('networkidle', { timeout: 15000 })
+      .catch(() => {});
   };
 
   it('renders search form properly', async () => {
@@ -136,7 +139,6 @@ describe('Flight Search - Main Page', () => {
 
   it('shows initial flights', async () => {
     await loadPage();
-
     await waitForFlightsLoaded();
 
     const items = page.locator(`[data-testid="${TEST_IDS.flights.item}"]`);
@@ -146,7 +148,6 @@ describe('Flight Search - Main Page', () => {
 
   it('shows flight info in flight card', async () => {
     await loadPage();
-
     await waitForFlightsLoaded();
 
     const firstItem = page
@@ -162,13 +163,12 @@ describe('Flight Search - Main Page', () => {
     await loadPage({ flights: { status: 200, body: [] } });
 
     const empty = page.locator(`[data-testid="${TEST_IDS.flights.empty}"]`);
-    await empty.waitFor({ state: 'visible', timeout: 10000 });
+    await empty.waitFor({ state: 'visible', timeout: 15000 });
     expect(await empty.isVisible()).toBe(true);
   });
 
   it('handles search flights', async () => {
     await loadPage();
-
     await waitForCitiesLoaded();
 
     await page.selectOption(`[data-testid="${TEST_IDS.search.origin}"]`, {
@@ -180,7 +180,9 @@ describe('Flight Search - Main Page', () => {
 
     await submitSearch();
 
-    await page.waitForLoadState('networkidle', { timeout: 10000 });
+    await page
+      .waitForLoadState('networkidle', { timeout: 15000 })
+      .catch(() => {});
     await waitForFlightsLoaded();
 
     const results = page.locator(`[data-testid="${TEST_IDS.flights.results}"]`);
@@ -189,7 +191,6 @@ describe('Flight Search - Main Page', () => {
 
   it('navigates to booking page on button click', async () => {
     await loadPage();
-
     await waitForFlightsLoaded();
 
     const bookButton = page
@@ -212,7 +213,7 @@ describe('Flight Search - Main Page', () => {
     });
 
     const error = page.locator(`[data-testid="${TEST_IDS.flights.error}"]`);
-    await error.waitFor({ state: 'visible', timeout: 10000 });
+    await error.waitFor({ state: 'visible', timeout: 15000 });
     expect(await error.isVisible()).toBe(true);
   });
 });

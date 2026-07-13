@@ -2,17 +2,21 @@ import { TEST_IDS } from '@/shared/constants/testids';
 import { chromium, type Browser, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-describe('Smoke test - Main Page', () => {
+describe('Smoke test - Main Header', () => {
   let browser: Browser | undefined;
   let page: Page | undefined;
+  let context: Awaited<ReturnType<Browser['newContext']>> | undefined;
 
   beforeAll(async () => {
     browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext();
+    context = await browser.newContext();
     page = await context.newPage();
   });
 
   afterAll(async () => {
+    if (context) {
+      await context.close();
+    }
     if (browser) {
       await browser.close();
     }

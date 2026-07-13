@@ -46,7 +46,7 @@ describe('Flight Search - Main Page', () => {
   };
 
   const mockCities = async () => {
-    await page.route('**/api/cities**', (route) =>
+    await page.route('*/api/cities', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -56,7 +56,7 @@ describe('Flight Search - Main Page', () => {
   };
 
   const mockFlights = async (response: { status: number; body: unknown }) => {
-    await page.route('**/api/flights**', (route) =>
+    await page.route('*/api/flights**', (route) =>
       route.fulfill({
         status: response.status,
         contentType: 'application/json',

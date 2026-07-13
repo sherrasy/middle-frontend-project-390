@@ -46,16 +46,12 @@ describe('Flight Search - Main Page', () => {
   };
 
   const waitForCitiesLoaded = async () => {
-    await page.waitForFunction(
-      (selector) => {
-        const select = document.querySelector(
-          selector,
-        ) as HTMLSelectElement | null;
-        return select !== null && select.options.length > 1;
-      },
-      `[data-testid="${TEST_IDS.search.origin}"]`,
-      { timeout: 25000 },
-    );
+    const options = await page
+      .getByTestId(TEST_IDS.search.origin)
+      .locator('option')
+      .allTextContents();
+
+    expect(options).toEqual(['Выберите город', 'Москва', 'Санкт-Петербург']);
   };
 
   const waitForFlightsLoaded = async () => {
@@ -66,7 +62,7 @@ describe('Flight Search - Main Page', () => {
   };
 
   const mockCities = async () => {
-    await page.route('*/api/cities', async (route) => {
+    await page.route('**/api/cities', async (route) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',

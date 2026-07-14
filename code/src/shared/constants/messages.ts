@@ -27,6 +27,7 @@ export const UI_MESSAGES = {
       email: 'Введите корректный email',
       phone: 'Введите корректный телефон',
       document: 'Введите номер документа',
+      minPassengers: 'Добавьте хотя бы одного пассажира',
     },
   },
   notFound: {

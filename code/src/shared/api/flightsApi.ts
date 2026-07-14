@@ -18,3 +18,6 @@ export const searchFlights = (params: SearchFlightsParams) => {
 
   return fetchApi<TFlight[]>(`/api/flights?${query}`);
 };
+
+export const getFlight = (id: string) =>
+  fetchApi<TFlight>(`/api/flights/${encodeURIComponent(id)}`);

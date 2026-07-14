@@ -8,4 +8,29 @@ export const UI_MESSAGES = {
     title: 'Рейсов не найдено',
     description: 'Попробуйте изменить параметры поиска',
   },
+  booking: {
+    flightNotFound: {
+      icon: '🔍',
+      title: 'Рейс не найден',
+      description: 'Проверьте ID рейса или вернитесь к поиску',
+    },
+    success: {
+      title: 'Бронирование оформлено!',
+      description: 'Ваш код бронирования:',
+    },
+    error: {
+      title: 'Ошибка оформления',
+      description: 'Не удалось оформить бронирование. Попробуйте позже.',
+    },
+    validation: {
+      required: 'Обязательное поле',
+      email: 'Введите корректный email',
+      phone: 'Введите корректный телефон',
+      document: 'Введите номер документа',
+    },
+  },
+  notFound: {
+    title: 'Страница не найдена',
+    description: 'Проверьте адрес или вернитесь на главную',
+  },
 } as const;

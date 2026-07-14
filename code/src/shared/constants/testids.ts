@@ -14,5 +14,17 @@ export const TEST_IDS = {
     passengers: 'search-passengers',
     submit: 'search-submit',
   },
+  booking: {
+    form: 'booking-form',
+    flight: 'booking-flight',
+    contactEmail: 'contact-email',
+    contactPhone: 'contact-phone',
+    addPassenger: 'add-passenger',
+    submit: 'booking-submit',
+    success: 'booking-success',
+    code: 'booking-code',
+    error: 'booking-error',
+    flightNotFound: 'flight-not-found',
+  },
   smoke: 'main-heading',
 } as const;

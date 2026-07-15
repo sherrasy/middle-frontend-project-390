@@ -22,7 +22,7 @@ export const BookingSuccess = ({
   return (
     <div
       data-testid={TEST_IDS.booking.success}
-      className='space-y-4 p-6 border border-green-200 rounded-xl bg-green-50'
+      className='space-y-4 p-6 border border-green-200 rounded-xl bg-green-50 w-full'
     >
       <h2 className='text-2xl font-bold text-gray-900'>
         {UI_MESSAGES.booking.success.title}

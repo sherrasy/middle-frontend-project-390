@@ -88,10 +88,10 @@ export const BookingPage = () => {
               Оформление бронирования
             </h2>
             <FlightInfo flight={flight} />
-            {/* <BookingForm
+            <BookingForm
               onSubmit={handleSubmit}
               serverError={serverError || bookingError}
-            /> */}
+            />
           </>
         );
     }

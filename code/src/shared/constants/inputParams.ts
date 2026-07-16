@@ -1,7 +1,7 @@
 export const PLACEHOLDERS = {
   contact: {
     email: 'ivan@example.com',
-    phone: '+7 999 000-11-22',
+    phone: '+79990001122',
   },
   passenger: {
     firstName: 'Иван',
@@ -12,9 +12,9 @@ export const PLACEHOLDERS = {
 
 export const FIELD_LIMITS = {
   phone: {
-    maxLength: 20,
+    maxLength: 12,
   },
   document: {
-    maxLength: 12,
+    maxLength: 11,
   },
 } as const;

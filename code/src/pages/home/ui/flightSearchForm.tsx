@@ -128,7 +128,7 @@ export const FlightSearchForm = ({ onSubmit }: FlightSearchFormProps) => {
           type='submit'
           data-testid={TEST_IDS.search.submit}
           disabled={citiesLoading || !origin || !destination}
-          className='w-48 h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed'
+          className='w-48 h-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed hover:cursor-pointer'
         >
           Найти
         </button>

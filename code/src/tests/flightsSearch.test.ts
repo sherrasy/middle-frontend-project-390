@@ -14,8 +14,8 @@ import {
   expect,
   it,
 } from 'vitest';
-import { CITIES_FIXTURE } from './_fixtures/cities';
 import { FLIGHTS_FIXTURE } from './_fixtures/flights';
+import { mockCities, mockFlights } from './_fixtures/mocks';
 
 describe('Flight Search - Main Page', () => {
   let browser: Browser;
@@ -61,26 +61,6 @@ describe('Flight Search - Main Page', () => {
       .waitFor({ state: 'visible', timeout: 25000 });
   };
 
-  const mockCities = async () => {
-    await page.route('**/api/cities', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(CITIES_FIXTURE),
-      });
-    });
-  };
-
-  const mockFlights = async (response: { status: number; body: unknown }) => {
-    await page.route(/\/api\/flights(\?.*)?$/, async (route) => {
-      await route.fulfill({
-        status: response.status,
-        contentType: 'application/json',
-        body: JSON.stringify(response.body),
-      });
-    });
-  };
-
   const submitSearch = async () => {
     await page.click(`[data-testid="${TEST_IDS.search.submit}"]`);
   };
@@ -88,8 +68,9 @@ describe('Flight Search - Main Page', () => {
   const loadPage = async (options?: {
     flights?: { status: number; body: unknown };
   }) => {
-    await mockCities();
+    await mockCities(page);
     await mockFlights(
+      page,
       options?.flights ?? { status: 200, body: FLIGHTS_FIXTURE },
     );
 

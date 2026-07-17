@@ -14,4 +14,4 @@ test:
 	APP_URL=$(APP_URL) npx vitest run tests/
 
 start:
-    npx frontend-flight-booking-server start -s dist
+	npx frontend-flight-booking-server start -s dist

@@ -1,5 +1,3 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
-
 type RequestConfig = Omit<RequestInit, 'body'> & {
   body?: unknown;
 };
@@ -8,7 +6,7 @@ export const fetchApi = async <T>(
   endpoint: string,
   config: RequestConfig = {},
 ): Promise<T> => {
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const res = await fetch(endpoint, {
     ...config,
     headers: {
       'Content-Type': 'application/json',

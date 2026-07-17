@@ -13,5 +13,5 @@ mock:
 test:
 	APP_URL=$(APP_URL) npx vitest run tests/
 
-start: build
-	npx frontend-flight-booking-server start -s dist
+start:
+ npx frontend-flight-booking-server start -s dist

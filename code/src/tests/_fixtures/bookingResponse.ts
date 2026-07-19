@@ -13,3 +13,8 @@ export const BOOKING_FIXTURE = {
   },
   createdAt: '2026-06-25T12:00:00Z',
 };
+
+export const CANCELLED_BOOKING_FIXTURE = {
+  ...BOOKING_FIXTURE,
+  status: 'cancelled',
+};

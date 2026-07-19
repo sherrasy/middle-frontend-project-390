@@ -8,6 +8,7 @@ export const PLACEHOLDERS = {
     lastName: 'Петров',
     documentNumber: '4509 123456',
   },
+  code: '1234AB',
 } as const;
 
 export const FIELD_LIMITS = {

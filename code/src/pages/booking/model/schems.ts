@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { UI_MESSAGES } from '@/shared/constants/messages';
 
-const MESSAGE = UI_MESSAGES.booking.validation;
+const MESSAGE = UI_MESSAGES.validation;
 
 export const bookingSchema = Yup.object({
   contact: Yup.object({

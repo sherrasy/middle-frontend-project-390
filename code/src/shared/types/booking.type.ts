@@ -1,4 +1,4 @@
-import { TFlight, TPrice } from '@/shared/types/types';
+import { TFlight, TPrice } from './flight.type';
 
 export type TBookingStatus = 'confirmed' | 'cancelled';
 

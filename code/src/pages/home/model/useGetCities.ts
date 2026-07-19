@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getCities } from '../api/citiesApi';
-import { TCity } from '@/shared/types/types';
+import { TCity } from '@/shared/types/flight.type';
 
 interface UseCitiesResult {
   cities: TCity[];

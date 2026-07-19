@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { TFlight } from '@/shared/types/types';
+import type { TFlight } from '@/shared/types/flight.type';
 import { getFlight } from '@/shared/api/flightsApi';
 
 export const useGetFlight = (id: string) => {

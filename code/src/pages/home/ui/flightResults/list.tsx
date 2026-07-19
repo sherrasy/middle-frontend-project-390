@@ -1,6 +1,6 @@
 import { UI_MESSAGES } from '@/shared/constants/messages';
 import { TEST_IDS } from '@/shared/constants/testids';
-import { TFlight } from '@/shared/types/types';
+import { TFlight } from '@/shared/types/flight.type';
 import { EmptyState } from '@/shared/ui/emptyState';
 import { ErrorMessage } from '@/shared/ui/errorMessage';
 import { Loader } from '@/shared/ui/loader';

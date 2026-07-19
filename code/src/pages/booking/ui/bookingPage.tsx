@@ -84,9 +84,7 @@ export const BookingPage = () => {
       case BookingViewState.Form:
         return (
           <>
-            <h2 className='text-2xl font-bold text-gray-900'>
-              Оформление бронирования
-            </h2>
+            <h2 className='text-2xl font-bold '>Оформление бронирования</h2>
             <FlightInfo flight={flight} />
             <BookingForm
               onSubmit={handleSubmit}

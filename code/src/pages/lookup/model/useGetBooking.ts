@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { createBooking } from '../api/bookingApi';
-import { TBooking, TCreateBookingRequest } from '@/shared/types/booking.type';
+import { getBookingByCode } from '../api/bookingLookupApi';
+import { TBooking } from '@/shared/types/booking.type';
 
-export const useCreateBooking = () => {
+export const useGetBooking = () => {
   const [booking, setBooking] = useState<TBooking | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const mutate = async (payload: TCreateBookingRequest) => {
+  const search = async (code: string, lastName: string) => {
     setIsLoading(true);
     setError(null);
+    setBooking(null);
     try {
-      const data = await createBooking(payload);
+      const data = await getBookingByCode(code, lastName);
       setBooking(data);
       return data;
     } catch (err) {
@@ -24,5 +25,5 @@ export const useCreateBooking = () => {
     }
   };
 
-  return { booking, isLoading, error, mutate };
+  return { booking, isLoading, error, search, setBooking };
 };

@@ -3,7 +3,7 @@ import {
   type SearchFlightsParams,
 } from '@/shared/api/flightsApi';
 import { getTodayDate } from '@/shared/lib/formatDate';
-import type { TFlight } from '@/shared/types/types';
+import type { TFlight } from '@/shared/types/flight.type';
 import { useEffect, useState } from 'react';
 
 interface UseFlightsResult {

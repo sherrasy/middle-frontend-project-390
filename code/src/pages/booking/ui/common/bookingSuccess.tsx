@@ -24,14 +24,14 @@ export const BookingSuccess = ({
       data-testid={TEST_IDS.booking.success}
       className='space-y-4 p-6 border border-green-200 rounded-xl bg-green-50 w-full'
     >
-      <h2 className='text-2xl font-bold text-gray-900'>
+      <h2 className='text-2xl font-bold '>
         {UI_MESSAGES.booking.success.title}
       </h2>
       <p className='text-gray-700'>
         {UI_MESSAGES.booking.success.description}{' '}
         <span
           data-testid={TEST_IDS.booking.code}
-          className='font-mono font-bold text-gray-900 text-lg'
+          className='font-mono font-bold  text-lg'
         >
           {code}
         </span>

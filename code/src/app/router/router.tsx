@@ -4,6 +4,7 @@ import { HomePage } from '@/pages/home/ui/homePage';
 import { BookingPage } from '@/pages/booking/ui/bookingPage';
 import { ROUTES } from '@/shared/constants/routes';
 import { NotFoundPage } from '@/pages/not-found/ui/notFoundPage';
+import { BookingLookupPage } from '@/pages/lookup/ui/lookupPage';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: `${ROUTES.BOOKING}/:flightId`, element: <BookingPage /> },
+      { path: `${ROUTES.MY}`, element: <BookingLookupPage /> },
       { path: ROUTES.NOT_FOUND, element: <NotFoundPage /> },
     ],
   },

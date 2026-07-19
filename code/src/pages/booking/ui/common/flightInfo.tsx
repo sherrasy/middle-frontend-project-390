@@ -25,7 +25,7 @@ export const FlightInfo = ({ flight }: FlightInfoProps) => {
       data-testid={TEST_IDS.booking.flight}
       className='mb-6 p-4 border border-gray-200 rounded-xl bg-white space-y-1'
     >
-      <p className='text-lg font-semibold text-gray-900'>
+      <p className='text-lg font-semibold '>
         {airline.name} · {flightNumber}
       </p>
       <p className='text-gray-700'>

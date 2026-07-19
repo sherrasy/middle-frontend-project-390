@@ -6,13 +6,15 @@ export const fetchApi = async <T>(
   endpoint: string,
   config: RequestConfig = {},
 ): Promise<T> => {
+  const hasBody = config.body !== undefined;
+
   const res = await fetch(endpoint, {
     ...config,
     headers: {
-      'Content-Type': 'application/json',
+      ...(hasBody ? { 'Content-Type': 'application/json' } : {}),
       ...config.headers,
     },
-    body: config.body ? JSON.stringify(config.body) : undefined,
+    body: hasBody ? JSON.stringify(config.body) : undefined,
   });
 
   if (!res.ok) {

@@ -5,10 +5,7 @@ import { TEST_IDS } from '@/shared/constants/testids';
 export const Header = () => (
   <header className='bg-white shadow-sm border-b border-gray-200'>
     <div className='max-w-6xl mx-auto px-4 py-4 flex flex-col  '>
-      <h1
-        className='text-2xl font-bold text-gray-900'
-        data-testid={TEST_IDS.smoke}
-      >
+      <h1 className='text-2xl font-bold ' data-testid={TEST_IDS.smoke}>
         Бронирование авиабилетов
       </h1>
       <nav className='flex items-center gap-6'>

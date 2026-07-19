@@ -26,18 +26,16 @@ export const FlightResultItem = ({ flight }: FlightResultItemProps) => {
   return (
     <div
       data-testid={TEST_IDS.flights.item}
-      className='bg-white border border-gray-200 rounded-xl p-5'
+      className='bg-white border border-gray-200 rounded-xl p-5  '
     >
       <div className='flex items-center justify-between gap-6'>
         <div className='flex-1'>
           <div className='flex items-center gap-2 mb-1'>
-            <span className='text-base font-bold text-gray-900'>
-              {airline.name}
-            </span>
-            <span className='text-base text-gray-900'>· {flightNumber}</span>
+            <span className='text-base font-bold '>{airline.name}</span>
+            <span className='text-base '>· {flightNumber}</span>
           </div>
 
-          <div className='text-base text-gray-900 mb-1'>
+          <div className='text-base  mb-1'>
             {origin.name} → {destination.name}
           </div>
 
@@ -48,7 +46,7 @@ export const FlightResultItem = ({ flight }: FlightResultItemProps) => {
         </div>
 
         <div className='flex items-center gap-4 shrink-0'>
-          <div className='text-2xl font-bold text-gray-900'>
+          <div className='text-2xl font-bold '>
             {price.amount} {UNITS.currency}
           </div>
           <button

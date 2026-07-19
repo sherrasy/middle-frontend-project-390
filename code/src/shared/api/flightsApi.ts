@@ -1,5 +1,5 @@
 import { fetchApi } from '../config/fetchApi';
-import { TFlight } from '../types/types';
+import { TFlight } from '../types/flight.type';
 
 export interface SearchFlightsParams {
   origin: string;

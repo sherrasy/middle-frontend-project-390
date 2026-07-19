@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createBooking } from '../api/bookingApi';
-import { TBooking, TCreateBookingRequest } from './types';
+import { TBooking, TCreateBookingRequest } from '@/shared/types/booking.type';
 
 export const useCreateBooking = () => {
   const [booking, setBooking] = useState<TBooking | null>(null);

@@ -1,5 +1,5 @@
 import { TEST_IDS } from '@/shared/constants/testids';
-import { TFlight } from '@/shared/types/types';
+import { TFlight } from '@/shared/types/flight.type';
 import { formatDateTime } from '@/shared/lib/formatDate';
 import { UNITS } from '@/shared/constants/consts';
 import { useNavigate } from 'react-router-dom';

@@ -32,5 +32,19 @@ export const TEST_IDS = {
       document: `passenger-${index}-document`,
     }),
   },
+  nav: {
+    lookup: 'nav-lookup',
+  },
+  bookingLookup: {
+    form: 'booking-lookup-form',
+    mainCode: 'lookup-code',
+    lastName: 'lookup-lastName',
+    submit: 'lookup-submit',
+    details: 'booking-details',
+    code: 'booking-code',
+    status: 'booking-status',
+    cancel: 'cancel-booking',
+    notFound: 'booking-not-found',
+  },
   smoke: 'main-heading',
 } as const;

@@ -18,6 +18,13 @@ export const Header = () => (
         >
           Поиск билетов
         </Link>
+        <Link
+          to={ROUTES.MY}
+          className='text-base font-medium underline text-blue-600 hover:text-blue-800 transition-colors'
+          data-testid={TEST_IDS.nav.lookup}
+        >
+          Мои брони
+        </Link>
       </nav>
     </div>
   </header>

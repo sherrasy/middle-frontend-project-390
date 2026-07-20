@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '@/shared/constants/routes';
 import { TEST_IDS } from '@/shared/constants/testids';
+import { ErrorButton } from './errorButton';
 
 export const Header = () => (
-  <header className='bg-white shadow-sm border-b border-gray-200'>
-    <div className='max-w-6xl mx-auto px-4 py-4 flex flex-col  '>
-      <h1 className='text-2xl font-bold ' data-testid={TEST_IDS.smoke}>
+  <header className='bg-white shadow-sm border-b border-gray-200 relative'>
+    <div className='max-w-6xl mx-auto px-4 py-4 flex flex-col'>
+      <h1 className='text-2xl font-bold' data-testid={TEST_IDS.smoke}>
         Бронирование авиабилетов
       </h1>
       <nav className='flex items-center gap-6'>
@@ -23,6 +24,9 @@ export const Header = () => (
           Мои брони
         </Link>
       </nav>
+    </div>
+    <div className='absolute top-4 right-4'>
+      <ErrorButton />
     </div>
   </header>
 );

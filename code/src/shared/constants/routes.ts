@@ -1,6 +1,6 @@
 export const ROUTES = {
   MAIN: '/',
   BOOKING: 'booking',
-  MY: 'mine',
+  MY: 'lookup',
   NOT_FOUND: '*',
 } as const;

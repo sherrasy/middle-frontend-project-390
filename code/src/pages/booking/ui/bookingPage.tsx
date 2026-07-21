@@ -32,8 +32,12 @@ export const BookingPage = () => {
         contact: values.contact,
         passengers: values.passengers,
       });
-    } catch (err: any) {
-      setServerError(err.message || UI_MESSAGES.booking.error.description);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setServerError(err.message);
+      } else {
+        setServerError(UI_MESSAGES.booking.error.description);
+      }
     }
   };
 

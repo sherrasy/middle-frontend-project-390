@@ -15,3 +15,6 @@ test:
 
 start:
 	npx frontend-flight-booking-server start -s dist
+
+server:
+	npx frontend-flight-booking-server start

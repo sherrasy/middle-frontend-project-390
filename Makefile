@@ -4,7 +4,7 @@ install:
 	cd code && npm i
 
 build:
-	cd code && run build
+	cd code && npm run build
 
 start:
 	cd code && npx frontend-flight-booking-server start -s dist

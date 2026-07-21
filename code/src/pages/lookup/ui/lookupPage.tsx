@@ -34,7 +34,7 @@ export const BookingLookupPage = () => {
         booking.passengers[0].lastName,
       );
       setBooking(updated);
-    } catch (err) {
+    } catch {
       setCancelError(UI_MESSAGES.bookingLookup.error.description);
     }
   };
